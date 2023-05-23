@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  memcached:
+    container_name: memcached_rndi
+    image: memcached:latest
+    restart: always
+    command: >
+      bash -c 'memcached -p 13334'
+    ports:
+      - "13334:13334"
+
+  adapter_test:
+    container_name: adapter_test
+    build:
+      context: .
+      dockerfile: dev.Dockerfile
+    command: >
+      bash -c 'flake8 &&
+      dockerize -wait tcp://memcached:13334 -timeout 50s &&
+      pytest'
+    depends_on:
+      - memcached
+    volumes:
+      - ./:/app
+    environment:
+      CACHE_MEMCACHED_HOST: memcached
+      CACHE_MEMCACHED_PORT: 13334

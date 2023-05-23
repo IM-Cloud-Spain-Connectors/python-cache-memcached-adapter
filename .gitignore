@@ -1,0 +1,12 @@
+*.pyc
+htmlcov/
+.coverage
+coverage.xml
+.generic_seamless_move_dev.env
+node_modules
+ui/tests/coverage
+*nogit*
+.idea/
+*.env
+
+git.exe.stackdump
